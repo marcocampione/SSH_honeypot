@@ -76,7 +76,8 @@ public class DummyCommand implements Command {
 			e.printStackTrace();
 		}
 	}
-	
+	//in command ci sono tutte le info che mi servirebbero 
+
 	private void handleCommand(String command) {
 		log("command: "+command);
 		if (command.length()==0) {
@@ -89,6 +90,7 @@ public class DummyCommand implements Command {
 		else
 		if (command.equals("halt")) {
 			if (callback!=null) callback.onExit(0,"Requested to halt");
+			//da rimuovere BUTTA GIU' IL SERVER 
 			System.exit(0);
 		}
 		else
@@ -124,6 +126,11 @@ public class DummyCommand implements Command {
 			//printOut("\r\n");
 			printPrompt();
 		}
+		else
+		if(command.equals("clear")){
+			log("output: pino ");
+			
+		}
 		else {
 			String commandOutput= command+": command not found.";
 			log("output: "+commandOutput);
@@ -131,7 +138,7 @@ public class DummyCommand implements Command {
 			printPrompt();
 		}
 	}
-
+	
 	@Override
 	public void start(ChannelSession channel, Environment env) throws IOException {
 		log("start()");

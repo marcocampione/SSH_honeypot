@@ -20,6 +20,7 @@
 
 
 import java.io.PrintStream;
+import java.io.FileWriter;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -29,6 +30,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+
 
 import org.apache.sshd.cli.CliLogger;
 import org.apache.sshd.cli.server.SshServerCliSupport;
@@ -52,6 +54,7 @@ import org.apache.sshd.server.shell.ShellFactory;
 import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
+import org.json.*;
 /**
  * TODO Add javadoc
  *
@@ -74,6 +77,7 @@ public class SshServerMain extends SshServerCliSupport {
         Collection<String> keyFiles = null;
         Collection<String> certFiles = null;
         Map<String, Object> options = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+
 
         int numArgs = GenericUtils.length(args);
         for (int i = 0; i < numArgs; i++) {
@@ -204,7 +208,7 @@ public class SshServerMain extends SshServerCliSupport {
         if (shellFactory != null) {
             if (logger.isInfoEnabled()) {
                 logger.info("Using shell={}", shellFactory.getClass().getName());
-            }
+            } 
             sshd.setShellFactory(shellFactory);
         }
 
@@ -244,10 +248,30 @@ public class SshServerMain extends SshServerCliSupport {
         return scpFactory;
     }
    
-    
+    private static FileWriter JSON_logfile;
+
     private static boolean passwdCheck(ServerSession session, String username, String password) {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
-    	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
-    	return success;
+    	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed" + "IP: " success.get));
+    	
+        /*
+         * TODO add GEOIP2 to track the location of the IP that the attacker is using during the attack
+         */
+
+        //here I'm creating Json file where I'll store all the information needed
+        JSONObject obj=new JSONObject();    
+                obj.put("username", username);    
+                obj.put("password", password);    
+                obj.put("timeout", session.getAuthTimeoutStart());
+                obj.put("ip", session.getRemoteAddress());
+                obj.put("city", "test");
+                obj.put("latitude", "test");
+                obj.put("longitude", "test");      
+                System.out.print(obj); 
+                JSON_logfile = new FileWriter("C:/Users/marco/Desktop/TESI/SSH_honeypot");
+                JSON_logfile.write(obj.toJSONString());
+
+        return success;
+
     }
 }
