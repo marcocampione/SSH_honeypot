@@ -20,7 +20,13 @@
 
 
 import java.io.PrintStream;
+
 import java.io.FileWriter;
+import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -54,7 +60,7 @@ import org.apache.sshd.server.shell.ShellFactory;
 import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
-import org.json.*;
+
 /**
  * TODO Add javadoc
  *
@@ -65,7 +71,7 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
-    static String rootPwd= "q";
+    static String rootPwd= "a";
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -248,30 +254,71 @@ public class SshServerMain extends SshServerCliSupport {
         return scpFactory;
     }
    
-    private static FileWriter JSON_logfile;
+    
 
     private static boolean passwdCheck(ServerSession session, String username, String password) {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
-    	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed" + "IP: " success.get));
-    	
-        /*
-         * TODO add GEOIP2 to track the location of the IP that the attacker is using during the attack
-         */
+    	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
+        
+        JSONObject dataObject = new JSONObject();
 
-        //here I'm creating Json file where I'll store all the information needed
-        JSONObject obj=new JSONObject();    
-                obj.put("username", username);    
-                obj.put("password", password);    
-                obj.put("timeout", session.getAuthTimeoutStart());
-                obj.put("ip", session.getRemoteAddress());
-                obj.put("city", "test");
-                obj.put("latitude", "test");
-                obj.put("longitude", "test");      
-                System.out.print(obj); 
-                JSON_logfile = new FileWriter("C:/Users/marco/Desktop/TESI/SSH_honeypot");
-                JSON_logfile.write(obj.toJSONString());
+        dataObject.put("ip", session.getRemoteAddress());
+        dataObject.put("username", username);
+        dataObject.put("password", password);
+        dataObject.put("timeout", session.getAuthTimeoutStart());
+        dataObject.put("city", "test");
+        dataObject.put("longitude", "test");
+
+        JSONObject attackerObject = new JSONObject(); 
+
+        attackerObject.put("attacker", dataObject);
+        
+        JSONArray attackerList = new JSONArray();
+        attackerList.add(attackerObject);
+
+        try (FileWriter JSON_logfile = new FileWriter("logFile.json")){
+            JSON_logfile.write(attackerList.toJSONString());
+            JSON_logfile.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
         return success;
 
     }
+
+    /* 
+        //here I'm creating Json file where I'll store all the information needed
+        FileWriter JSON_logfile;
+        JSONObject obj=new JSONObject();
+
+        obj.put("username",  username);    
+        obj.put("password", password);    
+        obj.put("timeout", session.getAuthTimeoutStart());
+        obj.put("ip", session.getRemoteAddress());
+        obj.put("city", "test");
+        obj.put("latitude", "test");
+        obj.put("longitude", "test");
+        
+        try {
+            //modificare per far salvare il file direttamente nella cartella di utilizzo
+            JSON_logfile = new FileWriter("C:/Users/marco/Desktop/TESI/SSH_honeypot/test.txt");
+            JSON_logfile.write(obj.toString());
+            util.SimpleLog.log("Successfully Copied JSON Object to File...");
+            util.SimpleLog.log("\nJSON Object: " + obj);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                JSON_logfile.flush();
+                JSON_logfile.close();
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
+        */
+
 }
