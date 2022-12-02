@@ -76,8 +76,7 @@ public class DummyCommand implements Command {
 			e.printStackTrace();
 		}
 	}
-	//in command ci sono tutte le info che mi servirebbero 
-
+	
 	private void handleCommand(String command) {
 		log("command: "+command);
 		if (command.length()==0) {
@@ -126,17 +125,71 @@ public class DummyCommand implements Command {
 			//printOut("\r\n");
 			printPrompt();
 		}
+		
+		// Clear command  
 		else
 		if(command.equals("clear")){
-			log("output: pino ");
-			
+			log("output: "+ command);
+			printOut("\033[H\033[2J");
+			printPrompt();    
 		}
-		else {
+		
+		// MKDIR command
+		else
+		if(command.startsWith("mkdir")){
+			String[] params= command.split(" ");
+			if (params.length>1) {
+				String name= params[1].trim();
+				if (name.equals("-h")) {
+					printOut("Usage: mkdir [OPTIONS] DIRECTORY...\n");
+					printOut("Create DIRECTORY\n");
+					printOut("-m MODE Mode\t");
+					printOut("-p no error if existing, make parent directories as needed\t");
+					printOut("-v print a message for each created directory\n");
+					printPrompt();
+				}
+				else
+				if (name.equals("--help")) {
+					printOut("Usage: mkdir [OPTIONS] DIRECTORY...\n");
+					printOut("Create DIRECTORY\n\t");
+					printOut("-m MODE Mode");
+					printOut("-p no error if existing, make parent directories as needed\n");
+					printOut("-v print a message for each created directory\n");
+					printPrompt();
+				}
+				else {
+					String commandOutput= command+": command not found.";
+					log("output: "+commandOutput);
+					printOut(commandOutput+"\r\n");
+				}
+			}
+			/* 
+			//mkdir function
+			try {
+				Directory home= localDir.createDirectory("home");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
+		}
+		
+		// RMDIR command
+		else
+		if(command.equals("rmdir")){
+			log("output: "+ command);
+			
+		}		
+		else{
 			String commandOutput= command+": command not found.";
 			log("output: "+commandOutput);
 			printOut(commandOutput+"\r\n");
 			printPrompt();
+		
+
+			
 		}
+		
 	}
 	
 	@Override
