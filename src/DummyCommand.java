@@ -87,9 +87,10 @@ public class DummyCommand implements Command {
 			if (callback!=null) callback.onExit(0,"Requested to exit"); 
 		}
 		else
+
+		//REMOVE IN THE FINAL VERSION 
 		if (command.equals("halt")) {
 			if (callback!=null) callback.onExit(0,"Requested to halt");
-			//da rimuovere BUTTA GIU' IL SERVER 
 			System.exit(0);
 		}
 		else
@@ -141,53 +142,81 @@ public class DummyCommand implements Command {
 			if (params.length>1) {
 				String name= params[1].trim();
 				if (name.equals("-h")) {
-					printOut("Usage: mkdir [OPTIONS] DIRECTORY...\n");
-					printOut("Create DIRECTORY\n");
-					printOut("-m MODE Mode\t");
-					printOut("-p no error if existing, make parent directories as needed\t");
-					printOut("-v print a message for each created directory\n");
-					printPrompt();
+					printOut("Usage: mkdir [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Create the DIRECTORY, if they do not already exist.\r\n");
+					printOut("\t-m MODE Mode;\r\n");
+					printOut("\t-p no error if existing, make parent directories as needed;\r\n");
+					printOut("\t-v print a message for each created directory;\r\n");
+					printOut("\t-h display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/mkdir>\r\n");
 				}
 				else
 				if (name.equals("--help")) {
-					printOut("Usage: mkdir [OPTIONS] DIRECTORY...\n");
-					printOut("Create DIRECTORY\n\t");
-					printOut("-m MODE Mode");
-					printOut("-p no error if existing, make parent directories as needed\n");
-					printOut("-v print a message for each created directory\n");
-					printPrompt();
+					printOut("Usage: mkdir [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Create the DIRECTORY, if they do not already exist.\r\n");
+					printOut("\t-m MODE Mode;\r\n");
+					printOut("\t-p no error if existing, make parent directories as needed;\r\n");
+					printOut("\t-v print a message for each created directory;\r\n");
+					printOut("\t--help display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/mkdir>\r\n");
 				}
 				else {
-					String commandOutput= command+": command not found.";
-					log("output: "+commandOutput);
-					printOut(commandOutput+"\r\n");
+					try {
+						localDir.createDirectory(name);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					printOut("Directory '"+name+"' created \r\n");
+					log("Directory '"+name+"' create");
 				}
 			}
-			/* 
-			//mkdir function
-			try {
-				Directory home= localDir.createDirectory("home");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
+			printPrompt();
 		}
 		
 		// RMDIR command
 		else
-		if(command.equals("rmdir")){
-			log("output: "+ command);
-			
-		}		
+		if(command.startsWith("rmdir")){
+			String[] params= command.split(" ");
+			if (params.length>1) {
+				String name= params[1].trim();
+				if (name.equals("-h")) {
+					printOut("Usage: rmdir [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Remove the DIRECTORY, if they are empty.\r\n");
+					printOut("\t-m MODE Mode;\r\n");
+					printOut("\t-p no error if existing, make parent directories as needed;\r\n");
+					printOut("\t-v print a message for each created directory;\r\n");
+					printOut("\t-h display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/rmdir>\r\n");
+				}
+				else
+				if (name.equals("--help")) {
+					printOut("Usage: mkdir [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Create the DIRECTORY, if they do not already exist.\r\n");
+					printOut("\t-p remove DIRECTORY and its ancestors;\r\n");
+					printOut("\t-v output a diagnostic for every directory processed;\r\n");
+					printOut("\t--help display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/rmdir>\r\n");
+				}
+				else {
+					try {
+						localDir.delDirectory(name);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					printOut("Directory '"+name+"' removed \r\n");
+					log("Directory '"+name+"' removed ");
+				}
+			}
+			printPrompt();
+		}
+		
+		
+		//PUT ABOVE 
 		else{
 			String commandOutput= command+": command not found.";
 			log("output: "+commandOutput);
 			printOut(commandOutput+"\r\n");
 			printPrompt();
-		
-
-			
 		}
 		
 	}

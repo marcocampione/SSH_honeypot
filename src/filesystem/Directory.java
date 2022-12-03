@@ -73,7 +73,7 @@ public class Directory extends FileProperties {
 	}
 
 	//modified from protected to public 
-	public void addDirectory(Directory d) throws IOException {
+	protected void addDirectory(Directory d) throws IOException {
 		if (getDirectory(d.getName())!=null) throw new IOException("Directory name already exists");
 		dirs.add(d);
 		d.setParentDirectory(this);
