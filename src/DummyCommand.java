@@ -1,3 +1,4 @@
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -6,6 +7,8 @@ import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
 import org.apache.sshd.server.command.Command;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import filesystem.File;
 import filesystem.Directory;
@@ -18,6 +21,23 @@ public class DummyCommand implements Command {
 	private void log(String msg) {
 		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
 		//System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+msg);
+		JSONObject command_obj = new JSONObject();
+		command_obj.put("Session: ", channel.getSession().getRemoteAddress());
+		command_obj.put("Command: ", msg);
+		
+
+		JSONObject userlog_obj = new JSONObject();
+		userlog_obj.put("User", command_obj);
+		;
+		JSONArray userList = new JSONArray();
+		userList.add(userlog_obj);
+		
+		try (FileWriter JSON_logfile = new FileWriter("userlogFile.json")){
+			JSON_logfile.write(userList.toJSONString());
+			JSON_logfile.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String PROMPT= "$ ";
