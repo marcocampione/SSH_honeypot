@@ -127,15 +127,15 @@ public class DummyCommand implements Command {
 			printPrompt();
 		}
 		
-		// Clear command  
+		// clear command  
 		else
 		if(command.equals("clear")){
-			log("output: "+ command);
 			printOut("\033[H\033[2J");
+			log("output: page cleared");
 			printPrompt();    
 		}
 		
-		// MKDIR command
+		// mkdir command
 		else
 		if(command.startsWith("mkdir")){
 			String[] params= command.split(" ");
@@ -149,6 +149,7 @@ public class DummyCommand implements Command {
 					printOut("\t-v print a message for each created directory;\r\n");
 					printOut("\t-h display this help and exit;\r\n\n");
 					printOut("Full documentation <https://www.gnu.org/software/coreutils/mkdir>\r\n");
+					log("output: "+ command + " description");
 				}
 				else
 				if (name.equals("--help")) {
@@ -159,6 +160,7 @@ public class DummyCommand implements Command {
 					printOut("\t-v print a message for each created directory;\r\n");
 					printOut("\t--help display this help and exit;\r\n\n");
 					printOut("Full documentation <https://www.gnu.org/software/coreutils/mkdir>\r\n");
+					log("output: "+ command + " description");
 				}
 				else {
 					try {
@@ -167,35 +169,36 @@ public class DummyCommand implements Command {
 						e.printStackTrace();
 					}
 					printOut("Directory '"+name+"' created \r\n");
-					log("Directory '"+name+"' create");
+					log("output: Directory '"+name+"' created");
 				}
 			}
 			printPrompt();
 		}
 		
-		// RMDIR command
+		// rm command
 		else
-		if(command.startsWith("rmdir")){
+		if(command.startsWith("rm")){
 			String[] params= command.split(" ");
 			if (params.length>1) {
 				String name= params[1].trim();
 				if (name.equals("-h")) {
-					printOut("Usage: rmdir [OPTIONS]... DIRECTORY...\r\n");
-					printOut("Remove the DIRECTORY, if they are empty.\r\n");
-					printOut("\t-m MODE Mode;\r\n");
-					printOut("\t-p no error if existing, make parent directories as needed;\r\n");
-					printOut("\t-v print a message for each created directory;\r\n");
+					printOut("Usage: rm [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Create the DIRECTORY, if they do not already exist.\r\n");
+					printOut("\t-p remove DIRECTORY and its ancestors;\r\n");
+					printOut("\t-v output a diagnostic for every directory processed;\r\n");
 					printOut("\t-h display this help and exit;\r\n\n");
 					printOut("Full documentation <https://www.gnu.org/software/coreutils/rmdir>\r\n");
+					log("output: "+ command + " description");
 				}
 				else
 				if (name.equals("--help")) {
-					printOut("Usage: mkdir [OPTIONS]... DIRECTORY...\r\n");
+					printOut("Usage: rm [OPTIONS]... DIRECTORY...\r\n");
 					printOut("Create the DIRECTORY, if they do not already exist.\r\n");
 					printOut("\t-p remove DIRECTORY and its ancestors;\r\n");
 					printOut("\t-v output a diagnostic for every directory processed;\r\n");
 					printOut("\t--help display this help and exit;\r\n\n");
 					printOut("Full documentation <https://www.gnu.org/software/coreutils/rmdir>\r\n");
+					log("output: "+ command + " description");
 				}
 				else {
 					try {
@@ -204,12 +207,60 @@ public class DummyCommand implements Command {
 						e.printStackTrace();
 					}
 					printOut("Directory '"+name+"' removed \r\n");
-					log("Directory '"+name+"' removed ");
+					log("output: Directory '"+name+"' removed ");
 				}
 			}
 			printPrompt();
 		}
 		
+		// pwd command
+		else 
+		if(command.equals("pwd")){
+			printOut(localDir.getPath()+"\r\n");
+			log("output: "+ localDir.getPath());
+			printPrompt();
+		}
+		
+		// whoami command
+		else
+		if(command.startsWith("whoami")){
+			String[] params= command.split(" ");
+			if (params.length>1) {
+				String name= params[1].trim();
+				if (name.equals("-h")) {
+					printOut("Usage: whoami [OPTIONS]...\r\n");
+					printOut("Print the user name associated with the current effective user ID.\r\n");
+					printOut("\t-h display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/whoami>\r\n");
+					log("output: "+ command + " description");
+				}
+				else
+				if (name.equals("--help")) {
+					printOut("Usage: whoami [OPTIONS]...\r\n");
+					printOut("Print the user name associated with the current effective user ID.\r\n");
+					printOut("\t-h display this help and exit;\r\n\n");
+					printOut("Full documentation <https://www.gnu.org/software/coreutils/whoami>\r\n");
+					log("output: "+ command + " description");
+				}
+			}
+			else {
+				printOut("root\r\n");
+				log("output: root");
+			}
+			printPrompt();
+		}
+		
+		// echo command 
+		else
+		if(command.startsWith("echo")){
+			String[] params= command.split("echo ");
+			String text= params[1].trim();
+			if (params.length>1) {
+				printOut(text + "\r\n");
+				log("output: "+ text);
+			}
+			printPrompt();
+		}
 		
 		//PUT ABOVE 
 		else{
