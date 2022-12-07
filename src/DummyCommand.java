@@ -2,6 +2,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HexFormat;
 
 import javax.lang.model.util.ElementScanner14;
 
@@ -33,7 +34,7 @@ public class DummyCommand implements Command {
 		userList.add(userlog_obj);
 		
 		try (FileWriter JSON_logfile = new FileWriter("userlogFile.json")){
-			JSON_logfile.write(userList.toJSONString());
+			JSON_logfile.append(userList.toJSONString());
 			JSON_logfile.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -86,16 +87,26 @@ public class DummyCommand implements Command {
 				// echo all characters
 				int c= in.read();
 				if (c>0) {
-					out.write(c);
-					out.flush();
-					commandLine.append((char)c);
-					if (c=='\r') {
-						out.write('\n');
+					if (c == 0x08 || c == 0x7F){
+						if(commandLine.length() > 0){
+							log("lung: " + commandLine.length());
+							out.write(c);
+							out.flush();
+							commandLine.deleteCharAt(commandLine.length()-1);
+						}
+					}
+					else{
+						out.write(c);
 						out.flush();
-						String command= commandLine.toString().trim();
-						commandLine.delete(0,commandLine.length());
-						handleCommand(command);
-					}				
+						commandLine.append((char)c);
+						if(c=='\r') {
+							out.write('\n');
+							out.flush();
+							String command= commandLine.toString().trim();
+							commandLine.delete(0,commandLine.length());
+							handleCommand(command);
+						}	
+					}			
 				}
 			}
 		}
@@ -106,7 +117,7 @@ public class DummyCommand implements Command {
 	
 	private void handleCommand(String command) {
 		log("command: "+command);
-		jsonlog(command);
+		//jsonlog(command);
 		if (command.length()==0) {
 			printPrompt();
 		}
@@ -318,7 +329,7 @@ public class DummyCommand implements Command {
 			printPrompt();
 		}
 
-
+		
 
 		//PUT ABOVE 
 		else{
