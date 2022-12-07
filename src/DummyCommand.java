@@ -3,6 +3,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.lang.model.util.ElementScanner14;
+
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
@@ -18,9 +20,7 @@ public class DummyCommand implements Command {
 	
 	public static boolean VERBOSE= true;
 	
-	private void log(String msg) {
-		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
-		//System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+msg);
+	private void jsonlog(String msg){
 		JSONObject command_obj = new JSONObject();
 		command_obj.put("Session: ", channel.getSession().getRemoteAddress());
 		command_obj.put("Command: ", msg);
@@ -28,7 +28,7 @@ public class DummyCommand implements Command {
 
 		JSONObject userlog_obj = new JSONObject();
 		userlog_obj.put("User", command_obj);
-		;
+		
 		JSONArray userList = new JSONArray();
 		userList.add(userlog_obj);
 		
@@ -38,6 +38,13 @@ public class DummyCommand implements Command {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	private void log(String msg) {
+		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
+		//System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+msg);
+		jsonlog(msg);
 	}
 	
 	public static String PROMPT= "$ ";
@@ -99,6 +106,7 @@ public class DummyCommand implements Command {
 	
 	private void handleCommand(String command) {
 		log("command: "+command);
+		jsonlog(command);
 		if (command.length()==0) {
 			printPrompt();
 		}
@@ -106,9 +114,10 @@ public class DummyCommand implements Command {
 		if (command.equals("exit")) {
 			if (callback!=null) callback.onExit(0,"Requested to exit"); 
 		}
-		else
+		
 
 		//REMOVE IN THE FINAL VERSION 
+		else
 		if (command.equals("halt")) {
 			if (callback!=null) callback.onExit(0,"Requested to halt");
 			System.exit(0);
@@ -228,6 +237,7 @@ public class DummyCommand implements Command {
 					}
 					printOut("Directory '"+name+"' removed \r\n");
 					log("output: Directory '"+name+"' removed ");
+					//jsonlog("output: Directory '"+name+"' removed ");
 				}
 			}
 			printPrompt();
@@ -282,6 +292,34 @@ public class DummyCommand implements Command {
 			printPrompt();
 		}
 		
+		//list of commands that are not usable by the user 
+		else
+		if (command.startsWith("passwd") || command.startsWith("iptables") || command.startsWith("cat") || 
+			command.startsWith("grep") || command.startsWith("sudo")) {
+			printOut("Permission denied! You can't use the command " + command + "\r\n");	
+			log("output:" + command + " Permission denied");	
+			printPrompt();
+		}	
+		//it displays all the command we can use 
+		else 
+		if(command.equals("help")){
+			printOut("\r\n\texit\tsudo\r\n");
+			printOut("\thalt\tcat\r\n");
+			printOut("\tls\tgrep\r\n");
+			printOut("\tcd\tpasswd\r\n");
+			printOut("\tclear\tiptables\r\n");
+			printOut("\tmkdir\r\n");
+			printOut("\trm\r\n");
+			printOut("\tpwd\r\n");
+			printOut("\twhoami\r\n");
+			printOut("\techo\r\n\n");
+
+			log("output: list of available command");
+			printPrompt();
+		}
+
+
+
 		//PUT ABOVE 
 		else{
 			String commandOutput= command+": command not found.";
