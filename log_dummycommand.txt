@@ -1,3 +1,0 @@
-Authenticator: /127.0.0.1:60799: username=test, passwd=a: Failed
-Authenticator: /127.0.0.1:60793: username=root, passwd=r: Failed
-Authenticator: /127.0.0.1:60793: username=root, passwd=t: Failed

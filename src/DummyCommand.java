@@ -18,7 +18,6 @@ import filesystem.File;
 import filesystem.Directory;
 
 
-
 public class DummyCommand implements Command {
 	
 	public static boolean VERBOSE= true;

@@ -1,6 +1,5 @@
 package util;
 
-
 import java.io.PrintStream;
 
 /** Collection of methods for logging message on a default PrintStream {@link #out}.
@@ -28,5 +27,5 @@ public final class SimpleLog {
 	public static void log(Object o, String msg) {
 		if (o!=null) log(o.getClass(),msg); else log(msg);
 	}
-	
+
 }

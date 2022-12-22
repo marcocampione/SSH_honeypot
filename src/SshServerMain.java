@@ -264,10 +264,9 @@ public class SshServerMain extends SshServerCliSupport {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
-        //######
         DataLogTxt logger = new DataLogTxt();
-		logger.logToFileDummyCommand("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
-        //######
+		logger.logToFileSshEntries("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
+        
         return success;
 
     }
