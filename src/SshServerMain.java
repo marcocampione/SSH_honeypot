@@ -19,6 +19,7 @@
 
 
 
+import java.io.IOException;
 import java.io.PrintStream;
 /*
 import java.io.FileWriter;
@@ -31,6 +32,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -264,8 +266,23 @@ public class SshServerMain extends SshServerCliSupport {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
-        DataLogTxt logger = new DataLogTxt();
-		logger.logToFileSshEntries("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
+        DataLogTxt logger = new DataLogTxt(); 
+        
+        //cleaning ip format
+        char firstChar = session.getRemoteAddress().toString().charAt(0);
+        
+        String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
+        String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
+        String[] IP_location = new String[0];
+        try {
+            IP_location = logger.geolocalizeIp(IpAddress, databasePath);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+		logger.logToFileSshEntries("IP: "+session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+
+        ", Username="+username+", Password="+password+", Autentication= "+(success? "Success" : "Failed"));
         
         return success;
 

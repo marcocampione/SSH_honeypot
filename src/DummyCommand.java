@@ -1,13 +1,10 @@
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 import util.DataLogTxt;
 
-import java.util.HexFormat;
 
-import org.apache.commons.logging.impl.SimpleLog;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
@@ -25,9 +22,9 @@ public class DummyCommand implements Command {
 
 	private void log(String msg) {
 		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
-		//System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+msg);
 		DataLogTxt logger = new DataLogTxt();
-		logger.logToFileDummyCommand("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
+		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
+		logger.logToFileDummyCommand("Session IP: "+channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+": "+msg);
 	}
 	
 	public static String PROMPT= "$ ";
@@ -288,7 +285,7 @@ public class DummyCommand implements Command {
 		if (command.startsWith("passwd") || command.startsWith("iptables") || command.startsWith("cat") || 
 			command.startsWith("grep") || command.startsWith("sudo")) {
 			printOut("Permission denied! You can't use the command " + command + "\r\n");	
-			log("output:" + command + " Permission denied");	
+			log("output: " + command + " Permission denied");	
 			printPrompt();
 		}	
 		//it displays all the command we can use 
