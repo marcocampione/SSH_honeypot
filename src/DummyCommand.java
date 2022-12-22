@@ -2,50 +2,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import util.DataLogTxt;
+
 import java.util.HexFormat;
 
-import javax.lang.model.util.ElementScanner14;
-
+import org.apache.commons.logging.impl.SimpleLog;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
 import org.apache.sshd.server.command.Command;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+
 
 import filesystem.File;
 import filesystem.Directory;
+
 
 
 public class DummyCommand implements Command {
 	
 	public static boolean VERBOSE= true;
 	
-	private void jsonlog(String msg){
-		JSONObject command_obj = new JSONObject();
-		command_obj.put("Session: ", channel.getSession().getRemoteAddress());
-		command_obj.put("Command: ", msg);
-		
-
-		JSONObject userlog_obj = new JSONObject();
-		userlog_obj.put("User", command_obj);
-		
-		JSONArray userList = new JSONArray();
-		userList.add(userlog_obj);
-		
-		try (FileWriter JSON_logfile = new FileWriter("userlogFile.json")){
-			JSON_logfile.append(userList.toJSONString());
-			JSON_logfile.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	private void log(String msg) {
 		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
 		//System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+msg);
-		jsonlog(msg);
+		DataLogTxt logger = new DataLogTxt();
+		logger.logToFileDummyCommand("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
 	}
 	
 	public static String PROMPT= "$ ";
@@ -89,7 +72,6 @@ public class DummyCommand implements Command {
 				if (c>0) {
 					if (c == 0x08 || c == 0x7F){
 						if(commandLine.length() > 0){
-							log("lung: " + commandLine.length());
 							out.write(c);
 							out.flush();
 							commandLine.deleteCharAt(commandLine.length()-1);
@@ -117,7 +99,6 @@ public class DummyCommand implements Command {
 	
 	private void handleCommand(String command) {
 		log("command: "+command);
-		//jsonlog(command);
 		if (command.length()==0) {
 			printPrompt();
 		}

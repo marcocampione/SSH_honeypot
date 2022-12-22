@@ -60,12 +60,7 @@ import org.apache.sshd.server.shell.ShellFactory;
 import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
-/*
-import com.maxmind.geoip2.DatabaseReader;
-
-import filesystem.File;
-*/
-
+import util.DataLogTxt;
 
 
 /**
@@ -268,6 +263,11 @@ public class SshServerMain extends SshServerCliSupport {
     private static boolean passwdCheck(ServerSession session, String username, String password) {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
+        
+        //######
+        DataLogTxt logger = new DataLogTxt();
+		logger.logToFileDummyCommand("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
+        //######
         return success;
 
     }
