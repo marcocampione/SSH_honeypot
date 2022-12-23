@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
+import java.util.regex.*;
 
 
 import org.apache.sshd.cli.CliLogger;
@@ -57,7 +58,6 @@ import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
 import util.DataLogTxt;
-
 
 /**
  * TODO Add javadoc
@@ -265,11 +265,15 @@ public class SshServerMain extends SshServerCliSupport {
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);
         
-        String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
+        String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
+
+        //splitting ip to remove port
+        String[]IpAddressSplit = IpAddress.split(":");
+
         String[] IP_location = new String[0];
         try {
-            IP_location = logger.geolocalizeIp(IpAddress, databasePath);
+            IP_location = logger.geolocalizeIp(IpAddressSplit[0], databasePath);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
