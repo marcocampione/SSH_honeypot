@@ -21,18 +21,12 @@
 
 import java.io.IOException;
 import java.io.PrintStream;
-/*
-import java.io.FileWriter;
-import java.io.IOException;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-*/
+
 
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
@@ -281,7 +275,7 @@ public class SshServerMain extends SshServerCliSupport {
             e.printStackTrace();
         }
        
-		logger.logToFileSshEntries("IP: "+session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+
+		logger.logToFileSshEntries("IP: "+ IpAddress+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+
         ", Username="+username+", Password="+password+", Autentication= "+(success? "Success" : "Failed"));
         
         return success;

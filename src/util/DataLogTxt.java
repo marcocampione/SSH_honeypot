@@ -76,7 +76,7 @@ public class DataLogTxt {
       String currentTime = dateFormat.format(new Date());
          
       // Write the log message to the file
-      writer.write("[" +currentTime + "] " + logMessage );
+      writer.write("[" +currentTime + "] " + logMessage);
       writer.newLine();
     
       // Close the writer
