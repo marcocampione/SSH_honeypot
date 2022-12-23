@@ -265,7 +265,7 @@ public class SshServerMain extends SshServerCliSupport {
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);
         
-        String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
+        String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
 
         //splitting ip to remove port
