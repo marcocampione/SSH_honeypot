@@ -283,7 +283,7 @@ public class SshServerMain extends SshServerCliSupport {
 		logger.logToFileSshEntries("IP: "+ IpAddress+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
         ", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+
         ", Username: "+username+", Password: "+password+
-        ", Autentication: "+(success? "Success" : "Failed"));
+        ", Authentication: "+(success? "Success" : "Failed"));
         
         return success;
 

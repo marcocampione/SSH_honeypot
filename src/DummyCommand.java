@@ -104,12 +104,7 @@ public class DummyCommand implements Command {
 		}
 		
 
-		//REMOVE IN THE FINAL VERSION 
-		else
-		if (command.equals("halt")) {
-			if (callback!=null) callback.onExit(0,"Requested to halt");
-			System.exit(0);
-		}
+		//REMOVE IN THE FINAL VERSION
 		else
 		if (command.equals("ls")) {
 			StringBuffer sb= new StringBuffer();
@@ -283,7 +278,7 @@ public class DummyCommand implements Command {
 		//list of commands that are not usable by the user 
 		else
 		if (command.startsWith("passwd") || command.startsWith("iptables") || command.startsWith("cat") || 
-			command.startsWith("grep") || command.startsWith("sudo")) {
+			command.startsWith("grep") || command.startsWith("sudo") || command.startsWith("halt")) {
 			printOut("Permission denied! You can't use the command " + command + "\r\n");	
 			log("output: " + command + " Permission denied");	
 			printPrompt();
