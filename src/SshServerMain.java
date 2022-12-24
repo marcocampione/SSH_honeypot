@@ -264,8 +264,8 @@ public class SshServerMain extends SshServerCliSupport {
         
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);
-        //String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
-        String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
+        String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
+        //String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
 
         //splitting ip to remove port
@@ -273,8 +273,8 @@ public class SshServerMain extends SshServerCliSupport {
 
         String[] IP_location = new String[0];
         try {
-            //IP_location = logger.geolocalizeIp(IpAddressSplit[0], databasePath);
             IP_location = logger.geolocalizeIp(IpAddressSplit[0], databasePath);
+            //IP_location = logger.geolocalizeIp("82.51.35.103", databasePath);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
