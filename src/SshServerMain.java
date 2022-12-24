@@ -32,7 +32,6 @@ import java.util.Objects;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
-import java.util.regex.*;
 
 
 import org.apache.sshd.cli.CliLogger;
@@ -69,12 +68,12 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
-    static String rootPwd= "a";
+    static String rootPwd= "abc123";
 
     //////////////////////////////////////////////////////////////////////////
 
     public static void main(String[] args) throws Exception {
-        int port = 8000;
+        int port = 22;
         boolean error = false;
         String hostKeyType = AbstractGeneratorHostKeyProvider.DEFAULT_ALGORITHM;
         int hostKeySize = 0;
@@ -280,7 +279,7 @@ public class SshServerMain extends SshServerCliSupport {
             e.printStackTrace();
         }
        
-		logger.logToFileSshEntries("IP: "+ IpAddress+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
+		logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
         ", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+
         ", Username: "+username+", Password: "+password+
         ", Authentication: "+(success? "Success" : "Failed"));
