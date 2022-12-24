@@ -37,9 +37,13 @@ public class DataLogTxt {
     // Get the city and country name
     String cityName = response.getCity().getName();
     String countryName = response.getCountry().getName();
+    String continent = response.getContinent().getName();
+    Double latitude = response.getLocation().getLatitude();
+    Double longitude = response.getLocation().getLongitude();
+    
 
     // Return the city and country names as a String array
-    return new String[] {cityName, countryName};
+    return new String[] {cityName, countryName, latitude.toString(),longitude.toString(),continent};
   }
 
 
@@ -85,4 +89,5 @@ public class DataLogTxt {
       e.printStackTrace();
     }
   }
+  
 }
