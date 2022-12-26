@@ -158,7 +158,7 @@ public class DataLogTxt {
         .append("city",IP_location[0] )
         .append("country", IP_location[1])
         .append("continent", IP_location[4])
-        .append("location", new Document("type", "Point").append("coordinates", Arrays.asList(Double.parseDouble(IP_location[2]), Double.parseDouble(IP_location[3]))))
+        .append("location", new Document("type", "Point").append("coordinates", Arrays.asList(Double.parseDouble(IP_location[3]), Double.parseDouble(IP_location[2]))))
         .append("Username", Username)
         .append("Password", Password)
         .append("Authentication", Authentication);
