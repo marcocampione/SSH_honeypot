@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 import java.net.InetAddress;
@@ -21,6 +22,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.geojson.Point;
+import com.mongodb.client.model.geojson.Position;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
 
@@ -31,50 +33,6 @@ import org.bson.codecs.pojo.ClassModel;
 
 
 public class DataLogTxt {
-  private static class Location {
-    private String city;
-    private String country;
-    private String continent;
-    @BsonProperty("location")
-    private Point location;
-    
-    public Location() {}
-    //public Location(double latitude, double longitude) {
-      //  this.location = new Point(latitude, longitude);
-    //}
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getContinent() {
-        return continent;
-    }
-
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
-
-    public Point getLocation(){
-        return location;
-    }
-    
-    public void setLocation(Point location) {
-        this.location = location;
-    }
-   }
   
   public String[] geolocalizeIp(String IpAddress) throws IOException {
     String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
@@ -170,6 +128,19 @@ public class DataLogTxt {
         }
         String password_db = env.getProperty("MONGODB_PASSWORD");
 
+        //########## GEOIP ###########
+        String[] IP_location = new String[0];
+        
+        try {
+            IP_location = geolocalizeIp(IP);
+            
+            //Remove comment if need to test on windows
+            //IP_location = geolocalizeIp("82.41.37.103");
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //############################
 
         ConnectionString connectionString = new ConnectionString("mongodb+srv://Marcocampione:"+password_db+"@honeypotcampione.xialfkn.mongodb.net/?retryWrites=true&w=majority");
         MongoClientSettings settings = MongoClientSettings.builder()
@@ -180,34 +151,19 @@ public class DataLogTxt {
         MongoDatabase database = mongoClient.getDatabase("mydatabase");
         MongoCollection<Document> collection = database.getCollection("mycollection");
 
-        String[] IP_location = new String[0];
-        
-        try {
-            IP_location = geolocalizeIp(IP);
-            
-            //Remove comment if need to test on windows
-            //IP_location = logger.geolocalizeIp("82.41.37.103");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        Location location = new Location();
-        location.setCity(IP_location[0].toString());
-        location.setCountry(IP_location[1].toString());
-        location.setContinent(IP_location[4].toString());
-        //location.setLocation(new Point(Double.parseDouble(IP_location[2]),Double.parseDouble(IP_location[3])));
-        //location.setLocation(new Point(IP_location[2],IP_location[3]));
-
-        Document locationDoc = new Document().append("location", location);
 
         Document doc = new Document()
         .append("Time", Time)
         .append("IP", IP)
-        .append("location", locationDoc)
+        .append("city",IP_location[0] )
+        .append("country", IP_location[1])
+        .append("continent", IP_location[4])
+        .append("location", new Document("type", "Point").append("coordinates", Arrays.asList(Double.parseDouble(IP_location[2]), Double.parseDouble(IP_location[3]))))
         .append("Username", Username)
         .append("Password", Password)
         .append("Authentication", Authentication);
-
+        
+        collection.createIndex(new Document("location", "2dsphere"));
         collection.insertOne(doc);
         mongoClient.close();
   }
