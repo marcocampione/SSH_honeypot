@@ -253,9 +253,7 @@ public class SshServerMain extends SshServerCliSupport {
     }
    
 
-   
-    
-    
+
     private static boolean passwdCheck(ServerSession session, String username, String password) {
     	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
@@ -284,7 +282,7 @@ public class SshServerMain extends SshServerCliSupport {
         //######## MONGODB ###########
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
-        logger.SavefileDatabase(currentTime, IpAddressSplit[0], IP_location[0], IP_location[1], IP_location[4],IP_location[2],IP_location[3],username, password,(success? "Success" : "Failed"));
+        logger.SavefileDatabase(currentTime, IpAddressSplit[0],username, password,(success? "Success" : "Failed"));
         //############################
 
 
