@@ -24,7 +24,9 @@ import java.io.PrintStream;
 
 
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +59,6 @@ import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
 import util.DataLogTxt;
-
 /**
  * TODO Add javadoc
  *
@@ -263,27 +264,36 @@ public class SshServerMain extends SshServerCliSupport {
         
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);
-        String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
-        //String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
-
         //splitting ip to remove port
         String[]IpAddressSplit = IpAddress.split(":");
 
+        //########## GEOIP ###########
         String[] IP_location = new String[0];
         try {
-            IP_location = logger.geolocalizeIp(IpAddressSplit[0], databasePath);
-            //IP_location = logger.geolocalizeIp("82.51.35.103", databasePath);
+            IP_location = logger.geolocalizeIp(IpAddressSplit[0]);
+            
+            //Remove comment if need to test on windows
+            //IP_location = logger.geolocalizeIp("82.41.37.103");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-       
+        //############################
+
+        //######## MONGODB ###########
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentTime = dateFormat.format(new Date());
+        logger.SavefileDatabase(currentTime, IpAddressSplit[0], IP_location[0], IP_location[1], IP_location[4],IP_location[2],IP_location[3],username, password,(success? "Success" : "Failed"));
+        //############################
+
+
+
+        //######## LOG ON TXT ###########
 		logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
-        ", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+
-        ", Username: "+username+", Password: "+password+
-        ", Authentication: "+(success? "Success" : "Failed"));
-        
+        ", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+ ", Username: "+username+", Password: "+password+", Authentication: "+(success? "Success" : "Failed"));
+        //###############################
+
         return success;
 
     }

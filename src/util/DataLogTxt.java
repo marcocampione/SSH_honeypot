@@ -1,20 +1,35 @@
 package util;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.Properties;
 import java.net.InetAddress;
 
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+
 public class DataLogTxt {
 
-  public String[] geolocalizeIp(String ipAddress, String databasePath) throws IOException {
+  public String[] geolocalizeIp(String IpAddress) throws IOException {
+    String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
+  
+    //Remove comment if need to test on windows
+    //String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
+
     // Create a DatabaseReader object using the GeoLite2 database
     DatabaseReader dbReader;
     try {
@@ -25,12 +40,12 @@ public class DataLogTxt {
     }
 
     // Geolocalize the IP address
-    InetAddress inetAddress = InetAddress.getByName(ipAddress);
+    InetAddress inetAddress = InetAddress.getByName(IpAddress);
     CityResponse response;
     try {
       response = dbReader.city(inetAddress);
     } catch (GeoIp2Exception e) {
-      System.out.println("Error geolocalizing IP address " + ipAddress + ": " + e.getMessage());
+      System.out.println("Error geolocalizing IP address " + IpAddress + ": " + e.getMessage());
       return null;
     }
 
@@ -90,4 +105,44 @@ public class DataLogTxt {
     }
   }
   
+
+  public void SavefileDatabase(String Time, String IP, String City, String Country, String Continent, String Latitude, String Longitude,String Username, String Password, String Authentication){
+    Properties env = new Properties();
+        try {
+          env.load(new FileInputStream(".env"));
+        } catch (FileNotFoundException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        String password_db = env.getProperty("MONGODB_PASSWORD");
+
+
+        ConnectionString connectionString = new ConnectionString("mongodb+srv://Marcocampione:"+password_db+"@honeypotcampione.xialfkn.mongodb.net/?retryWrites=true&w=majority");
+        MongoClientSettings settings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+        MongoClient mongoClient = MongoClients.create(settings);
+
+        MongoDatabase database = mongoClient.getDatabase("mydatabase");
+        MongoCollection<Document> collection = database.getCollection("mycollection");
+
+        
+
+        Document doc = new Document()
+        .append("Time", Time)
+        .append("IP", IP)
+        .append("City", City)
+        .append("Country", Country)
+        .append("Continent", Continent)
+        .append("Latitude", Latitude)
+        .append("Longitude", Longitude)
+        .append("Username", Username)
+        .append("Password", Password)
+        .append("Authentication", Authentication);
+
+        collection.insertOne(doc);
+  }
 }

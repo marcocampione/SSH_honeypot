@@ -1,3 +1,4 @@
 /key.pem
 log_dummycommand.txt
 log_verification.txt
+.env
