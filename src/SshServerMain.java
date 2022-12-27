@@ -265,11 +265,11 @@ public class SshServerMain extends SshServerCliSupport {
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
         //splitting ip to remove port
         String[]IpAddressSplit = IpAddress.split(":");
-
+/*
         //########## GEOIP ###########
-        String[] IP_location = new String[0];
+        String[] IP_Data = new String[0];
         try {
-            IP_location = logger.geolocalizeIp(IpAddressSplit[0]);
+            IP_Data = logger.geolocalizeIp(IpAddressSplit[0]);
             
             //Remove comment if need to test on windows
             //IP_location = logger.geolocalizeIp("82.41.37.103");
@@ -278,7 +278,7 @@ public class SshServerMain extends SshServerCliSupport {
             e.printStackTrace();
         }
         //############################
-
+*/
         //######## MONGODB ###########
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
@@ -288,8 +288,8 @@ public class SshServerMain extends SshServerCliSupport {
 
 
         //######## LOG ON TXT ###########
-		logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
-        ", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+ ", Username: "+username+", Password: "+password+", Authentication: "+(success? "Success" : "Failed"));
+		//logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
+        //", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+ ", Username: "+username+", Password: "+password+", Authentication: "+(success? "Success" : "Failed"));
         //###############################
 
         return success;

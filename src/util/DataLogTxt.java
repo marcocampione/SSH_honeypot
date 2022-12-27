@@ -12,64 +12,73 @@ import java.util.Date;
 import java.util.Properties;
 import java.net.InetAddress;
 
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Locale;
+
+import org.json.JSONObject;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.geojson.Point;
-import com.mongodb.client.model.geojson.Position;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-
-import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.codecs.pojo.*;
-import org.bson.codecs.pojo.ClassModel;
 
 
 
 public class DataLogTxt {
   
   public String[] geolocalizeIp(String IpAddress) throws IOException {
-    String databasePath = "GeoLite2-City/GeoLite2-City.mmdb";
-  
-    //Remove comment if need to test on windows
-    //String databasePath = "GeoLite2-City\\GeoLite2-City.mmdb";
-
-    // Create a DatabaseReader object using the GeoLite2 database
-    DatabaseReader dbReader;
     try {
-      dbReader = new DatabaseReader.Builder(new File(databasePath)).build();
-    } catch (IOException e) {
-      System.out.println("Error opening GeoLite2 database: " + e.getMessage());
+      // Send a GET request to the IP-API API to get the location of the IP address
+      URL url = new URL("http://ip-api.com/json/" + IpAddress + "?fields=7368703");
+      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      con.setRequestMethod("GET");
+      con.setConnectTimeout(5000);
+      con.setReadTimeout(5000);
+
+      // Read the response from the API
+      BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+      String inputLine;
+      StringBuilder content = new StringBuilder();
+      while ((inputLine = in.readLine()) != null) {
+        content.append(inputLine);
+      }
+      in.close();
+      // Parse the JSON response from the API
+      JSONObject json = new JSONObject(content.toString());
+
+      // Get the city and country name from the JSON object
+      String query =json.getString("query");
+      String status = json.getString("status");
+      String continent = json.getString("continent");
+      String continentCode =json.getString("continentCode");
+      String country = json.getString("country");
+      String countryCode =json.getString("countryCode");
+      String region =json.getString("region");
+      String regionName =json.getString("regionName");
+      String city = json.getString("city");
+      String zip =json.getString("zip");
+      float latitude = json.getFloat("lat");
+      float longitude = json.getFloat("lon");
+      String isp =json.getString("isp");
+      String org =json.getString("org");
+      String as =json.getString("as");
+      String asName =json.getString("asname");
+      
+
+      // Return the city and country names as a String array
+      return new String[] {query,status,continent,continentCode,country,countryCode,region,regionName,city,zip,Float.toString(longitude),Float.toString(latitude),isp,org,as,asName};
+    } catch (Exception e) {
+      e.printStackTrace();
       return null;
     }
-
-    // Geolocalize the IP address
-    InetAddress inetAddress = InetAddress.getByName(IpAddress);
-    CityResponse response;
-    try {
-      response = dbReader.city(inetAddress);
-    } catch (GeoIp2Exception e) {
-      System.out.println("Error geolocalizing IP address " + IpAddress + ": " + e.getMessage());
-      return null;
-    }
-
-    // Get the city and country name
-    String cityName = response.getCity().getName();
-    String countryName = response.getCountry().getName();
-    String continent = response.getContinent().getName();
-    Double latitude = response.getLocation().getLatitude();
-    Double longitude = response.getLocation().getLongitude();
-    
-
-    // Return the city and country names as a String array
-    return new String[] {cityName, countryName, latitude.toString(),longitude.toString(),continent};
   }
+  
 
   public void logToFileDummyCommand(String logMessage) {
     try {
@@ -126,42 +135,51 @@ public class DataLogTxt {
           // TODO Auto-generated catch block
           e.printStackTrace();
         }
-        String password_db = env.getProperty("MONGODB_PASSWORD");
+        String connection_string_db = env.getProperty("MONGODB_CONNECTION_STRING");
 
         //########## GEOIP ###########
-        String[] IP_location = new String[0];
+        String[] IP_Data = new String[0];
         
         try {
-            IP_location = geolocalizeIp(IP);
-            
-            //Remove comment if need to test on windows
-            //IP_location = geolocalizeIp("82.41.37.103");
+            IP_Data = geolocalizeIp(IP);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
         //############################
 
-        ConnectionString connectionString = new ConnectionString("mongodb+srv://Marcocampione:"+password_db+"@honeypotcampione.xialfkn.mongodb.net/?retryWrites=true&w=majority");
+        ConnectionString connectionString = new ConnectionString(connection_string_db);
+        
         MongoClientSettings settings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
-
-        MongoDatabase database = mongoClient.getDatabase("mydatabase");
+        MongoDatabase database = mongoClient.getDatabase("HoneypotDB");
         MongoCollection<Document> collection = database.getCollection("mycollection");
 
 
         Document doc = new Document()
-        .append("Time", Time)
-        .append("IP", IP)
-        .append("city",IP_location[0] )
-        .append("country", IP_location[1])
-        .append("continent", IP_location[4])
-        .append("location", new Document("type", "Point").append("coordinates", Arrays.asList(Double.parseDouble(IP_location[3]), Double.parseDouble(IP_location[2]))))
-        .append("Username", Username)
-        .append("Password", Password)
-        .append("Authentication", Authentication);
+        .append("time", Time)
+        .append("ip", IP_Data[0])
+        .append("status", IP_Data[1])
+        .append("continent", IP_Data[2])
+        .append("continentCode", IP_Data[3])
+        .append("country", IP_Data[4])
+        .append("countryCode", IP_Data[5])
+        .append("region", IP_Data[6])
+        .append("regionName", IP_Data[7])
+        .append("city", IP_Data[8])
+        .append("zip", IP_Data[9])
+        
+        .append("location", new Document("type", "Point").append("coordinates", Arrays.asList(Double.parseDouble(IP_Data[10]), Double.parseDouble(IP_Data[11]))))
+        .append("isp", IP_Data[12])
+        .append("org", IP_Data[13])
+        .append("as", IP_Data[14])
+        .append("asname", IP_Data[15])
+        
+        .append("username", Username)
+        .append("password", Password)
+        .append("authentication", Authentication);
         
         collection.createIndex(new Document("location", "2dsphere"));
         collection.insertOne(doc);
