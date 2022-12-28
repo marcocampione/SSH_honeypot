@@ -69,7 +69,7 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
-    static String rootPwd= "abc123";
+    static String rootPwd= "123456";
 
     //////////////////////////////////////////////////////////////////////////
 
