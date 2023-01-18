@@ -260,7 +260,12 @@ public class SshServerMain extends SshServerCliSupport {
             for (String pwd : rootPwds) {
                 if (Objects.equals(password, pwd)) {
                     success = true;
-                    //boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
+                    break;
+                }
+            }
+        }
+
+    	//boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
         DataLogTxt logger = new DataLogTxt(); 
@@ -270,38 +275,12 @@ public class SshServerMain extends SshServerCliSupport {
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
         //splitting ip to remove port
         String[]IpAddressSplit = IpAddress.split(":");
-/*
-        //########## GEOIP ###########
-        String[] IP_Data = new String[0];
-        try {
-            IP_Data = logger.geolocalizeIp(IpAddressSplit[0]);
-            
-            //Remove comment if need to test on windows
-            //IP_location = logger.geolocalizeIp("82.41.37.103");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        //############################
-*/
+
         //######## MONGODB ###########
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
         logger.SavefileDatabase(currentTime, IpAddressSplit[0],username, password,(success? "Success" : "Failed"));
         //############################
-
-
-
-        //######## LOG ON TXT ###########
-		//logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
-        //", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+ ", Username: "+username+", Password: "+password+", Authentication: "+(success? "Success" : "Failed"));
-        //###############################
-                }
-            }
-        }
-
-
-    	
 
         return success;
 
