@@ -69,7 +69,8 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
-    static String[] rootPwds= {"123456", "12345", "root"};
+    static String[] rootPwds= {"123456", "root", "admin", "123", "0", "1"};
+    static String[] piPwds= {"raspberry", "pi"};
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -219,7 +220,9 @@ public class SshServerMain extends SshServerCliSupport {
         //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(username, password));
         //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(rootPwd, password));
         sshd.setPasswordAuthenticator((username, password, session) -> passwdCheck(session,username,password));
-        util.SimpleLog.log("SSHd: SshServerMain: main(): root's pwd: "+rootPwds[0]+", "+rootPwds[1]+", "+rootPwds[2]);
+        util.SimpleLog.log("SSHd: SshServerMain: main(): root's pwd: "+rootPwds[0]+", "+rootPwds[1]+", "+rootPwds[2]+ ", "+rootPwds[3] + ", "+rootPwds[4]+ ", "+rootPwds[5]);
+        util.SimpleLog.log("SSHd: SshServerMain: main(): pi's pwd: "+piPwds[0]+", "+piPwds[1]);
+        
         sshd.setPublickeyAuthenticator(AcceptAllPublickeyAuthenticator.INSTANCE);
         setupUserAuthFactories(sshd, resolver);
         setupServerForwarding(sshd, level, System.out, System.err, resolver);
@@ -258,6 +261,13 @@ public class SshServerMain extends SshServerCliSupport {
         boolean success = false;
         if (Objects.equals(username, "root")) {
             for (String pwd : rootPwds) {
+                if (Objects.equals(password, pwd)) {
+                    success = true;
+                    break;
+                }
+            }
+        }else if (Objects.equals(username, "pi")) {
+            for (String pwd : piPwds) {
                 if (Objects.equals(password, pwd)) {
                     success = true;
                     break;
