@@ -256,7 +256,6 @@ public class SshServerMain extends SshServerCliSupport {
     }
    
 
-
     private static boolean passwdCheck(ServerSession session, String username, String password) {
         boolean success = false;
         if (Objects.equals(username, "root")) {
@@ -275,7 +274,6 @@ public class SshServerMain extends SshServerCliSupport {
             }
         }
 
-    	//boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
         DataLogTxt logger = new DataLogTxt(); 
