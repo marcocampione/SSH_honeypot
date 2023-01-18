@@ -69,7 +69,7 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
-    static String rootPwd= "123456";
+    static String[] rootPwds= {"123456", "12345", "root"};
 
     //////////////////////////////////////////////////////////////////////////
 
@@ -219,7 +219,7 @@ public class SshServerMain extends SshServerCliSupport {
         //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(username, password));
         //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(rootPwd, password));
         sshd.setPasswordAuthenticator((username, password, session) -> passwdCheck(session,username,password));
-        util.SimpleLog.log("SSHd: SshServerMain: main(): root's pwd: "+rootPwd);
+        util.SimpleLog.log("SSHd: SshServerMain: main(): root's pwd: "+rootPwds[0]+", "+rootPwds[1]+", "+rootPwds[2]);
         sshd.setPublickeyAuthenticator(AcceptAllPublickeyAuthenticator.INSTANCE);
         setupUserAuthFactories(sshd, resolver);
         setupServerForwarding(sshd, level, System.out, System.err, resolver);
@@ -255,7 +255,12 @@ public class SshServerMain extends SshServerCliSupport {
 
 
     private static boolean passwdCheck(ServerSession session, String username, String password) {
-    	boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
+        boolean success = false;
+        if (Objects.equals(username, "root")) {
+            for (String pwd : rootPwds) {
+                if (Objects.equals(password, pwd)) {
+                    success = true;
+                    //boolean success= Objects.equals(username, "root") && Objects.equals(password, rootPwd);
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
         DataLogTxt logger = new DataLogTxt(); 
@@ -291,6 +296,12 @@ public class SshServerMain extends SshServerCliSupport {
 		//logger.logToFileSshEntries("IP: "+ IpAddressSplit[0]+ ", City: "+ IP_location[0]+", Country: " + IP_location[1]+", Continent: " + IP_location[4]+
         //", Latitude: "+ IP_location[2]+", Longitude: " + IP_location[3]+ ", Username: "+username+", Password: "+password+", Authentication: "+(success? "Success" : "Failed"));
         //###############################
+                }
+            }
+        }
+
+
+    	
 
         return success;
 
