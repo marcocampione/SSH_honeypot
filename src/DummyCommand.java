@@ -1,10 +1,11 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 
 import util.DataLogTxt;
 
-
+import org.apache.sshd.common.session.Session;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
@@ -104,7 +105,7 @@ public class DummyCommand implements Command {
 		}
 		
 
-		//REMOVE IN THE FINAL VERSION
+		// list files and directories command
 		else
 		if (command.equals("ls")) {
 			StringBuffer sb= new StringBuffer();
@@ -135,7 +136,6 @@ public class DummyCommand implements Command {
 					else printOut("Directory '"+name+"' not found\r\n");
 				}
 			}
-			//printOut("\r\n");
 			printPrompt();
 		}
 		
@@ -336,7 +336,22 @@ public class DummyCommand implements Command {
 	public void setOutputStream(OutputStream out) {
 		log("setOutputStream()");
 		this.out= out;
-		printOut("Wellcome to this honeypot ;)\r\n");
+		printOut("Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-57-generic x86_64)\r\n");
+		printOut(" * Documentation:  https://help.ubuntu.com\r\n");
+		printOut(" * Management:     https://landscape.canonical.com\r\n");
+		printOut(" * Support:        https://ubuntu.com/advantage\r\n");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		printOut("System information as" + dateFormat + "UTC\r\n");
+		printOut("System load:           0.080078125\r\n");
+		printOut("Usage of /:            23.5% of 24.04GB\r\n");
+		printOut("Memory usage:          34%\r\n");
+		printOut("Swap usage:            6%\r\n");
+		printOut("Processes:             101\r\n");
+		printOut("Users logged in:       1\r\n");
+		printOut("IPv4 address for eth0: 172.104.249.194\r\n");
+		printOut("IPv6 address for eth0: 2a01:7e01::f03c:93ff:feca:a2fc\r\n");
+		printOut("Last login: "+ dateFormat + "from "+ channel.getSession().getRemoteAddress().toString() + "\r\n");
+
 		printPrompt();
 	}
 	

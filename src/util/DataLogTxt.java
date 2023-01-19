@@ -5,20 +5,16 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
-import java.net.InetAddress;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Locale;
-
 import org.json.JSONObject;
+
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -154,8 +150,8 @@ public class DataLogTxt {
                 .applyConnectionString(connectionString)
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase("HoneypotDB_easypsw");
-        MongoCollection<Document> collection = database.getCollection("mycollection_easypsw");
+        MongoDatabase database = mongoClient.getDatabase("HoneypotDB");
+        MongoCollection<Document> collection = database.getCollection("mycollection");
 
 
 
