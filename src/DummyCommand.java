@@ -337,23 +337,23 @@ public class DummyCommand implements Command {
 	public void setOutputStream(OutputStream out) {
 		log("setOutputStream()");
 		this.out= out;
-		printOut("Welcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-57-generic x86_64)\r\n");
+		printOut("\r\nWelcome to Ubuntu 22.04.1 LTS (GNU/Linux 5.15.0-57-generic x86_64)\r\n");
 		printOut(" * Documentation:  https://help.ubuntu.com\r\n");
 		printOut(" * Management:     https://landscape.canonical.com\r\n");
 		printOut(" * Support:        https://ubuntu.com/advantage\r\n");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = dateFormat.format(new Date());
-		printOut("System information as " + currentTime + " UTC\r\n");
-		printOut("System load:           0.080078125\r\n");
-		printOut("Usage of /:            23.5% of 24.04GB\r\n");
-		printOut("Memory usage:          34%\r\n");
-		printOut("Swap usage:            6%\r\n");
-		printOut("Processes:             101\r\n");
-		printOut("Users logged in:       1\r\n");
-		printOut("IPv4 address for eth0: 172.104.249.194\r\n");
-		printOut("IPv6 address for eth0: 2a01:7e01::f03c:93ff:feca:a2fc\r\n");
+		printOut("\r\n System information as " + currentTime + " UTC\r\n");
+		printOut("\r\n  System load:           0.080078125\r\n");
+		printOut("  Usage of /:            23.5% of 24.04GB\r\n");
+		printOut("  Memory usage:          34%\r\n");
+		printOut("  Swap usage:            6%\r\n");
+		printOut("  Processes:             101\r\n");
+		printOut("  Users logged in:       1\r\n");
+		printOut("  IPv4 address for eth0: 172.104.249.194\r\n");
+		printOut("  IPv6 address for eth0: 2a01:7e01::f03c:93ff:feca:a2fc\r\n");
 		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
-		printOut("Last login: "+ currentTime + " from "+ channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "") + "\r\n");
+		printOut("\r\nLast login: "+ currentTime + " from "+ channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "") + "\r\n");
 
 		printPrompt();
 	}
