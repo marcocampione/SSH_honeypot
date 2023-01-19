@@ -341,7 +341,7 @@ public class DummyCommand implements Command {
 		printOut(" * Management:     https://landscape.canonical.com\r\n");
 		printOut(" * Support:        https://ubuntu.com/advantage\r\n");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-		printOut("System information as" + dateFormat + "UTC\r\n");
+		printOut("System information as " + dateFormat.toString() + " UTC\r\n");
 		printOut("System load:           0.080078125\r\n");
 		printOut("Usage of /:            23.5% of 24.04GB\r\n");
 		printOut("Memory usage:          34%\r\n");
@@ -350,7 +350,8 @@ public class DummyCommand implements Command {
 		printOut("Users logged in:       1\r\n");
 		printOut("IPv4 address for eth0: 172.104.249.194\r\n");
 		printOut("IPv6 address for eth0: 2a01:7e01::f03c:93ff:feca:a2fc\r\n");
-		printOut("Last login: "+ dateFormat + "from "+ channel.getSession().getRemoteAddress().toString() + "\r\n");
+		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
+		printOut("Last login: "+ dateFormat.toString() + " from "+ channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "") + "\r\n");
 
 		printPrompt();
 	}
