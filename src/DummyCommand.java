@@ -340,7 +340,7 @@ public class DummyCommand implements Command {
 		printOut(" * Documentation:  https://help.ubuntu.com\r\n");
 		printOut(" * Management:     https://landscape.canonical.com\r\n");
 		printOut(" * Support:        https://ubuntu.com/advantage\r\n");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		printOut("System information as " + dateFormat.toString() + " UTC\r\n");
 		printOut("System load:           0.080078125\r\n");
 		printOut("Usage of /:            23.5% of 24.04GB\r\n");
