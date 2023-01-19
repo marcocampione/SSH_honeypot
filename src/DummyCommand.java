@@ -2,6 +2,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import util.DataLogTxt;
 
@@ -341,7 +342,8 @@ public class DummyCommand implements Command {
 		printOut(" * Management:     https://landscape.canonical.com\r\n");
 		printOut(" * Support:        https://ubuntu.com/advantage\r\n");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		printOut("System information as " + dateFormat.toString() + " UTC\r\n");
+		String currentTime = dateFormat.format(new Date());
+		printOut("System information as " + currentTime + " UTC\r\n");
 		printOut("System load:           0.080078125\r\n");
 		printOut("Usage of /:            23.5% of 24.04GB\r\n");
 		printOut("Memory usage:          34%\r\n");
@@ -351,7 +353,7 @@ public class DummyCommand implements Command {
 		printOut("IPv4 address for eth0: 172.104.249.194\r\n");
 		printOut("IPv6 address for eth0: 2a01:7e01::f03c:93ff:feca:a2fc\r\n");
 		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
-		printOut("Last login: "+ dateFormat.toString() + " from "+ channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "") + "\r\n");
+		printOut("Last login: "+ currentTime + " from "+ channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "") + "\r\n");
 
 		printPrompt();
 	}
