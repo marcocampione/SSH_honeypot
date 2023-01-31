@@ -53,7 +53,7 @@ $ jar -cf sshd.jar -C classes filesystem -C classes util -C classes DummyCommand
 MONGODB_CONNECTION_STRING=mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.example.com/?retryWrites=true&w=majority
 ```
 - You can find the connection string by clicking on your database, then on the `connect` button and finally on `connect your application`  . This is what will appear : 
-![[Pasted image 20230131115505.png]]
+![image](https://user-images.githubusercontent.com/38539173/215849120-a6c65376-c47f-41b8-b1e8-629aeb20583d.png)
 
 5. The honeypot is configured in a way that it will use the `port 22` on the host server/machine as listen port, so before running it we have to change the ssh port in our system to a different one since the `port 22` is setted by default. 
 	-  Log on to the server as an administrator.
