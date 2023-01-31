@@ -61,9 +61,9 @@ MONGODB_CONNECTION_STRING=mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.exam
 ```bash 
 $ sudo nano /etc/ssh/sshd_config
 ```
-<p align="center">
-<img src="https://imgur.com/a/4lYpM78"/>
-</p>
+
+![Screenshot 2023-01-31 183123](https://user-images.githubusercontent.com/38539173/215848779-206d4feb-3c7a-4de2-b364-f45f3dcd1b96.png)
+
 - Replace `port 22` with a port between 1024 and 65536 and uncomment the line
 - Save the file
 - Restart the service
