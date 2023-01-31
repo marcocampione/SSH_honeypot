@@ -69,10 +69,10 @@ public class SshServerMain extends SshServerCliSupport {
         super(); // in case someone wants to extend it
     }
     
+    // Password for root and pi used fror authentication
     static String[] rootPwds= {"123456", "root", "admin", "123", "0", "1"};
     static String[] piPwds= {"raspberry", "pi"};
 
-    //////////////////////////////////////////////////////////////////////////
 
     public static void main(String[] args) throws Exception {
         int port = 22;
@@ -217,8 +217,6 @@ public class SshServerMain extends SshServerCliSupport {
             sshd.setShellFactory(shellFactory);
         }
 
-        //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(username, password));
-        //sshd.setPasswordAuthenticator((username, password, session) -> Objects.equals(rootPwd, password));
         sshd.setPasswordAuthenticator((username, password, session) -> passwdCheck(session,username,password));
         util.SimpleLog.log("SSHd: SshServerMain: main(): root's pwd: "+rootPwds[0]+", "+rootPwds[1]+", "+rootPwds[2]+ ", "+rootPwds[3] + ", "+rootPwds[4]+ ", "+rootPwds[5]);
         util.SimpleLog.log("SSHd: SshServerMain: main(): pi's pwd: "+piPwds[0]+", "+piPwds[1]);
@@ -281,6 +279,7 @@ public class SshServerMain extends SshServerCliSupport {
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);
         String IpAddress = session.getRemoteAddress().toString().replaceFirst(Character.toString(firstChar),"");
+
         //splitting ip to remove port
         String[]IpAddressSplit = IpAddress.split(":");
 
@@ -291,7 +290,6 @@ public class SshServerMain extends SshServerCliSupport {
         //############################
 
         return success;
-
     }
 }
 

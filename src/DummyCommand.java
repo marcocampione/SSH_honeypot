@@ -6,7 +6,6 @@ import java.util.Date;
 
 import util.DataLogTxt;
 
-import org.apache.sshd.common.session.Session;
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
 import org.apache.sshd.server.channel.ChannelSession;
@@ -109,9 +108,7 @@ public class DummyCommand implements Command {
 		// list files and directories command
 		else
 		if (command.equals("ls")) {
-			StringBuffer sb= new StringBuffer();
-			//sb.append(". ");
-			//if (!localDir.isRoot()) sb.append(".. ");			
+			StringBuffer sb= new StringBuffer();		
 			for (Directory d : localDir.getDirectories()) sb.append(d).append(' ');
 			for (File f : localDir.getFiles()) sb.append(f).append(' ');
 			String commandOutput= sb.toString();
@@ -221,7 +218,6 @@ public class DummyCommand implements Command {
 					}
 					printOut("Directory '"+name+"' removed \r\n");
 					log("output: Directory '"+name+"' removed ");
-					//jsonlog("output: Directory '"+name+"' removed ");
 				}
 			}
 			printPrompt();
@@ -284,7 +280,8 @@ public class DummyCommand implements Command {
 			log("output: " + command + " Permission denied");	
 			printPrompt();
 		}	
-		//it displays all the command we can use 
+
+		//help command
 		else 
 		if(command.equals("help")){
 			printOut("\r\n\texit\tsudo\r\n");
@@ -302,9 +299,6 @@ public class DummyCommand implements Command {
 			printPrompt();
 		}
 
-		
-
-		//PUT ABOVE 
 		else{
 			String commandOutput= command+": command not found.";
 			log("output: "+commandOutput);

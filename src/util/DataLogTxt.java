@@ -30,9 +30,11 @@ import org.bson.Document;
 
 public class DataLogTxt {
   
+  //This function geolocalize the IP address and return all the infomation about it in a String array
   public String[] geolocalizeIp(String IpAddress) throws IOException {
     try {
       // Send a GET request to the IP-API API to get the location of the IP address
+      // The field is a comma separated list of fields to return
       URL url = new URL("http://ip-api.com/json/" + IpAddress + "?fields=7368703");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
@@ -77,7 +79,7 @@ public class DataLogTxt {
     }
   }
   
-
+  //This function save all commands that the attacker will carry out within the honeypot into a txt file
   public void logToFileDummyCommand(String logMessage) {
     try {
       // Set up the file and the BufferedWriter that will write to it
@@ -99,6 +101,10 @@ public class DataLogTxt {
     }
   }
 
+  /* 
+  //You can use this function if you want to log the ssh entries to a file txt
+  
+  //######################################################################
   public void logToFileSshEntries(String logMessage) {
     try {
       // Set up the file and the BufferedWriter that will write to it
@@ -120,7 +126,10 @@ public class DataLogTxt {
       e.printStackTrace();
     }
   }
-  
+  //######################################################################
+  */
+
+  //This function save the ssh entries into a MongoDB database
 
   public void SavefileDatabase(String Time, String IP,String Username, String Password, String Authentication){
     Properties env = new Properties();
