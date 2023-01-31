@@ -1,4 +1,4 @@
-#SSH_Honeypot
+# SSH_Honeypot
 
 # Contents
  
@@ -14,7 +14,7 @@
 ---
 
 ## Installation Guide
----
+
 Quick guide on how to use this honeypot.  You will find a detailed procedure to get the honeypot working on your device.
 
 1. Download the source code zip and save it into your desired folder or use the command 
@@ -79,10 +79,10 @@ $ java -cp "lib/*:sshd.jar" SshServerMain
 
 
 ## MongoDB database
----
+
 
 ## Server Command
----
+
 
 ## The Dashboard
----
+
