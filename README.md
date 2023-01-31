@@ -11,7 +11,8 @@
 --- 
 
 ## Description
-This is the description of the honeypot
+The development of this honeypot starts with an example provided in the [Apache MINA SSHD](https://github.com/apache/mina-sshdApaMINA) libraries: ServerMain.java. This script allows the instauration of a server at a port that the user can choose (in our case port 22, dedicated to SSH communications). The program basically gives access to the host operating system, hence giving complete access to the machine once the authentication step in passed. 
+The data that the honeypot will gather during the activity time are then store on a MongoDB database. I chose to use this database since it gives a really nice representation of the data that are stored in the collection. Thanks to the dashboard function that is buit in MongoDB, we can graphically visualise the data we will collect.
 
 ## Installation Guide
 
