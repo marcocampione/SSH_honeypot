@@ -86,7 +86,7 @@ $ java -cp "lib/*:sshd.jar" SshServerMain
 
 ## Server Command
 
-This is a list of all the command that are implemented inside the honeypot server. These are some of the most used linux terminal commands, implemented in a way that accurately emulates the workings on Linux. You can add or modify the command by modifying the `DummyComand.java` file. 
+This is a list of all the command that are implemented inside the honeypot server. These are some of the most used linux terminal commands, implemented in a way that accurately emulates the workings on Linux. You can add or modify the command by modifying the `DummyCommand.java` file located in `src` folder. 
 
 |     |      Command       | Description                                                                                         |
 |:---:|:------------------:|:--------------------------------------------------------------------------------------------------- |
