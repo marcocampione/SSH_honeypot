@@ -15,7 +15,6 @@ The development of this honeypot starts with an example provided in the [Apache 
 The data that the honeypot will gather during the activity time are then store on a MongoDB database. I chose to use this database since it gives a really nice representation of the data that are stored in the collection. Thanks to the dashboard function that is buit in MongoDB, we can graphically visualise the data we will collect.
 
 ## Installation Guide
-
 Quick guide on how to use this honeypot.  You will find a detailed procedure to get the honeypot working on your device.
 
 1. Download the source code zip and save it into your desired folder or use the command 
@@ -78,14 +77,9 @@ $ service ssh restart
 $ java -cp "lib/*:sshd.jar" SshServerMain
 ```
 
-
-
-
 ## MongoDB Database
 
-
 ## Server Command
-
 This is a list of all the command that are implemented inside the honeypot server. These are some of the most used linux terminal commands, implemented in a way that accurately emulates the workings on Linux. You can add or modify the command by modifying the `DummyCommand.java` file located in `src` folder. 
 
 |     |      Command       | Description                                                                                         |
@@ -109,7 +103,6 @@ This is a list of all the command that are implemented inside the honeypot serve
 | 14  |        sudo        | This command will show a Permission denied message                                                  |
 | 15  |        cat         | This command will show a Permission denied message                                                  |
 | 16  |        halt        | This command will show a Permission denied message                                                  |
-
 
 ## The Dashboard
 
