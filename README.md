@@ -4,8 +4,8 @@
  
 - [Description](#description) 
 - [Installation Guide](#Installation-Guide)
-- [MongoDB Database](#MongoDB-Database) 
 - [The ssh server command](#server-command)
+- [MongoDB Integration](#MongoDB-integration) 
 - [The Dashboard](#the-dashboard)
 
 --- 
@@ -77,8 +77,6 @@ $ service ssh restart
 $ java -cp "lib/*:sshd.jar" SshServerMain
 ```
 
-## MongoDB Database
-
 ## Server Command
 This is a list of all the command that are implemented inside the honeypot server. These are some of the most used linux terminal commands, implemented in a way that accurately emulates the workings on Linux. You can add or modify the command by modifying the `DummyCommand.java` file located in `src` folder. 
 
@@ -103,6 +101,44 @@ This is a list of all the command that are implemented inside the honeypot serve
 | 14  |        sudo        | This command will show a Permission denied message                                                  |
 | 15  |        cat         | This command will show a Permission denied message                                                  |
 | 16  |        halt        | This command will show a Permission denied message                                                  |
+
+## MongoDB Integration
+To use this honeypot you need fist to register to [MongoDB](https://www.mongodb.com/) because we will use their sevices to store the data from our machine. I chose this service for its user-friendly nature, but especially for the ability it offers to have databases hosted directly by them and completely free of charge. Another feature that made me choose this service is the ability to graphically visualize the collection of data being collected by our honeypot.
+
+- After we register we need to create a new project and then a new cluster that will host our database: 
+![Screenshot 2023-02-01 143228](https://user-images.githubusercontent.com/38539173/216057330-505405f2-2b14-4fcd-abbf-0495f43ecc6e.png)
+ 
+The data that the honeypot will send to our database are in this format
+
+```json
+_id : ObjectId('xxxxxxxxxxxxxxxxxxxxxxxx')
+time:"yyyy-mm-dd hh:mm:ss"
+ip:"127.0.0.1"
+status:"success"
+continent:"continentName"
+continentCode:"XX"
+country: "countryName"
+countryCode:"XX"
+region: "xx"
+regionName: "regionName"
+city: "cityName"
+zip:"xxxx"
+location: 
+	Object type: "Point"
+	coordinates:
+	Array 
+		0: 00.0000
+		1: 11.1111
+isp:"ispName"
+org: ""
+as: "name"
+asname: "name"
+username: "root"
+password: "test"
+authentication: "Failed"
+```
+
+All the geolocation information that we have in this file are obtained using an api call thanks to [this service](https://ip-api.com/), the free api that I am using in this project is rate limited to **45** request per minutes, but from my tests are more than enough for the kind of use we need to perform.
 
 ## The Dashboard
 
