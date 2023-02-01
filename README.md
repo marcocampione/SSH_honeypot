@@ -110,7 +110,7 @@ To use this honeypot you need fist to register to [MongoDB](https://www.mongodb.
  
 The data that the honeypot will send to our database are in this format
 
-```json
+```
 _id : ObjectId('xxxxxxxxxxxxxxxxxxxxxxxx')
 time:"yyyy-mm-dd hh:mm:ss"
 ip:"127.0.0.1"
