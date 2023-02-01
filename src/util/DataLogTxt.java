@@ -161,8 +161,8 @@ public class DataLogTxt {
                 .applyConnectionString(connectionString)
                 .build();
         MongoClient mongoClient = MongoClients.create(settings);
-        MongoDatabase database = mongoClient.getDatabase("HoneypotDB_easypsw");
-        MongoCollection<Document> collection = database.getCollection("mycollection_easypsw");
+        MongoDatabase database = mongoClient.getDatabase("HoneypotDB");
+        MongoCollection<Document> collection = database.getCollection("mycollection");
 
 
 

@@ -86,6 +86,30 @@ $ java -cp "lib/*:sshd.jar" SshServerMain
 
 ## Server Command
 
+This is a list of all the command that are implemented inside the honeypot server. These are some of the most used linux terminal commands, implemented in a way that accurately emulates the workings on Linux. You can add or modify the command by modifying the `DummyComand.java` file. 
+
+|     |      Command       | Description                                                                                         |
+|:---:|:------------------:|:--------------------------------------------------------------------------------------------------- |
+|  1  |        help        | Will display all the available commands                                                             |
+|  2  |        exit        | Will close the connection with the honeypot                                                         |
+|  3  |         ls         | This command will list files                                                                        |
+|  4  |         cd         | This command allows you to move between directories                                                 |
+|  5  |       clear        | This command will clear the terminal screen                                                         |
+|  6  |       mkdir        | This command creates a directory or subdirectory                                                    |
+| 6.a | mkdir -h / --help  | This command displays help for the mkdir command                                                    |
+|  7  |         rm         | This command allows removing files and directories                                                  |
+| 7.a |   rm -h /--help    | This command displays help for the rm command                                                       |
+|  8  |        pwd         | This commang writes to standard output the full path name of your current directory                 |
+|  9  |       whoami       | This command allows the user to see the currently logged-in user                                    |
+| 9.a | whoami -h / --help | This command displays help for the whoami command                                                   |
+| 10  |        echo        | This command will display lines of text or string which are passed as arguments on the command line |
+| 11  |       passwd       | This command will show a Permission denied message                                                  |
+| 12  |      iptables      | This command will show a Permission denied message                                                  |
+| 13  |        grep        | This command will show a Permission denied message                                                  |
+| 14  |        sudo        | This command will show a Permission denied message                                                  |
+| 15  |        cat         | This command will show a Permission denied message                                                  |
+| 16  |        halt        | This command will show a Permission denied message                                                  |
+
 
 ## The Dashboard
 
