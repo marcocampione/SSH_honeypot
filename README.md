@@ -142,3 +142,17 @@ All the geolocation information that we have in this file are obtained using an 
 
 ## The Dashboard
 
+The choice to use mongoDB over other services that offer the ability to host databases , was to be able to directly create interactive dashboards that update in real time. [Here](https://www.mongodb.com/docs/charts/tutorial/movie-details/create-dashboard/) you can find a complete guide on how to create a dashboard. 
+In the folder you will also find a file named `Honeypot_Dashboard.charts` this is the configuration file of my dashboard that you can import into MondgoDB to get the same dashboard I created. 
+
+- Go on the `Charts` tab
+![Screenshot 2023-02-02 085042](https://user-images.githubusercontent.com/38539173/216264366-6ec7780d-758a-4b08-b029-505c153eb77b.png)
+
+- Click on `Add Dashboard` then on `Import dashboard`
+![Screenshot 2023-02-02 085206](https://user-images.githubusercontent.com/38539173/216264370-ac676e7d-2357-40ec-a039-30e79e57db8b.png)
+
+- After selecting the `Honeypot_dashboard.charts` file that you can find on the main folder click on `save`. 
+![Screenshot 2023-02-02 085321](https://user-images.githubusercontent.com/38539173/216264371-799b1094-48dc-4c09-902a-510294298bd3.png)
+
+- You have successfully imported the dashboard. 
+This is the result you will obtain [Honeypot Dashboard](https://tinyurl.com/HoneypotDashboard) 
