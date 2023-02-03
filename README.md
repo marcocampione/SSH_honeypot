@@ -8,7 +8,7 @@
 - [MongoDB Integration](#MongoDB-integration) 
 - [The Dashboard](#the-dashboard)
 
---- 
+
 
 ## Description
 The development of this honeypot starts with an example provided in the [Apache MINA SSHD](https://github.com/apache/mina-sshdApaMINA) libraries: ServerMain.java. This script allows the instauration of a server at a port that the user can choose (in our case port 22, dedicated to SSH communications). The program basically gives access to the host operating system, hence giving complete access to the machine once the authentication step in passed. 

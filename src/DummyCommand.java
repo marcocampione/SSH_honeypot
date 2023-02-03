@@ -28,6 +28,7 @@ public class DummyCommand implements Command {
 		logger.logToFileDummyCommand("Session IP: "+channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+": "+msg);
 	}
 	
+
 	public static String PROMPT= "$ ";
 	
 	private ChannelSession channel;
@@ -254,8 +255,8 @@ public class DummyCommand implements Command {
 				}
 			}
 			else {
-				printOut("root\r\n");
-				log("output: root");
+				printOut(channel.getSession().getUsername().toString() + "\r\n");
+				log("output: " + channel.getSession().getUsername().toString());
 			}
 			printPrompt();
 		}
@@ -353,7 +354,7 @@ public class DummyCommand implements Command {
 	}
 	
 	private void printPrompt() {
-		printOut(username+"@honeypot:"+localDir.getPath()+PROMPT);
+		printOut(username+"@myhomeserver:"+localDir.getPath()+PROMPT);
 	}
 
 	private void printOut(String str) {
