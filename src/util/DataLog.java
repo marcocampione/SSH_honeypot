@@ -28,8 +28,8 @@ import org.bson.Document;
 
 
 
-public class DataLogTxt {
-  
+public class DataLog {
+
   //This function geolocalize the IP address and return all the infomation about it in a String array
   public String[] geolocalizeIp(String IpAddress) throws IOException {
     try {
@@ -70,7 +70,6 @@ public class DataLogTxt {
       String as =json.getString("as");
       String asName =json.getString("asname");
       
-
       // Return the city and country names as a String array
       return new String[] {query,status,continent,continentCode,country,countryCode,region,regionName,city,zip,Float.toString(longitude),Float.toString(latitude),isp,org,as,asName};
     } catch (Exception e) {
@@ -163,8 +162,6 @@ public class DataLogTxt {
         MongoClient mongoClient = MongoClients.create(settings);
         MongoDatabase database = mongoClient.getDatabase("HoneypotDB");
         MongoCollection<Document> collection = database.getCollection("mycollection");
-
-
 
         Document doc = new Document()
         .append("time", Time)

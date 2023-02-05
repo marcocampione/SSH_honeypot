@@ -58,7 +58,7 @@ import org.apache.sshd.server.shell.ShellFactory;
 import org.apache.sshd.server.subsystem.SubsystemFactory;
 import org.slf4j.Logger;
 
-import util.DataLogTxt;
+import util.DataLog;
 /**
  * TODO Add javadoc
  *
@@ -274,7 +274,7 @@ public class SshServerMain extends SshServerCliSupport {
 
     	System.err.println("Authenticator: "+session.getRemoteAddress()+": username="+username+", passwd="+password+": "+(success? "Success" : "Failed"));
         
-        DataLogTxt logger = new DataLogTxt(); 
+        DataLog logger = new DataLog(); 
         
         //cleaning ip format
         char firstChar = session.getRemoteAddress().toString().charAt(0);

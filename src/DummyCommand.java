@@ -4,7 +4,7 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import util.DataLogTxt;
+import util.DataLog;
 
 import org.apache.sshd.server.Environment;
 import org.apache.sshd.server.ExitCallback;
@@ -23,7 +23,7 @@ public class DummyCommand implements Command {
 
 	private void log(String msg) {
 		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
-		DataLogTxt logger = new DataLogTxt();
+		DataLog logger = new DataLog();
 		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
 		logger.logToFileDummyCommand("Session IP: "+channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+": "+msg);
 	}
