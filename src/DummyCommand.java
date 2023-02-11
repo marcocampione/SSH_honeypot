@@ -25,7 +25,7 @@ public class DummyCommand implements Command {
 		System.out.println("Test SSHd: "+DummyCommand.class.getSimpleName()+": "+channel.getSession().getRemoteAddress()+": "+msg);
 		DataLog logger = new DataLog();
 		char firstChar = channel.getSession().getRemoteAddress().toString().charAt(0);
-		logger.logToFileDummyCommand("Session IP: "+channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+": "+msg);
+		logger.LogToFileDummyCommand("Session IP: "+channel.getSession().getRemoteAddress().toString().replaceFirst(Character.toString(firstChar), "")+": "+msg);
 	}
 	
 

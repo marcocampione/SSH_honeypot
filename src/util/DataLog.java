@@ -31,10 +31,9 @@ import org.bson.Document;
 public class DataLog {
 
   //This function geolocalize the IP address and return all the infomation about it in a String array
-  public String[] geolocalizeIp(String IpAddress) throws IOException {
+  public String[] GeolocalizeIp(String IpAddress) throws IOException {
     try {
       // Send a GET request to the IP-API API to get the location of the IP address
-      // The field is a comma separated list of fields to return
       URL url = new URL("http://ip-api.com/json/" + IpAddress + "?fields=7368703");
       HttpURLConnection con = (HttpURLConnection) url.openConnection();
       con.setRequestMethod("GET");
@@ -70,7 +69,6 @@ public class DataLog {
       String as =json.getString("as");
       String asName =json.getString("asname");
       
-      // Return the city and country names as a String array
       return new String[] {query,status,continent,continentCode,country,countryCode,region,regionName,city,zip,Float.toString(longitude),Float.toString(latitude),isp,org,as,asName};
     } catch (Exception e) {
       e.printStackTrace();
@@ -79,7 +77,7 @@ public class DataLog {
   }
   
   //This function save all commands that the attacker will carry out within the honeypot into a txt file
-  public void logToFileDummyCommand(String logMessage) {
+  public void LogToFileDummyCommand(String logMessage) {
     try {
       // Set up the file and the BufferedWriter that will write to it
       File logFile = new File("log_dummycommand.txt");
@@ -130,7 +128,7 @@ public class DataLog {
 
   //This function save the ssh entries into a MongoDB database
 
-  public void SavefileDatabase(String Time, String IP,String Username, String Password, String Authentication){
+  public void SaveFileDatabase(String Time, String IP,String Username, String Password, String Authentication){
     Properties env = new Properties();
         try {
           env.load(new FileInputStream(".env"));
@@ -147,7 +145,7 @@ public class DataLog {
         String[] IP_Data = new String[0];
         
         try {
-            IP_Data = geolocalizeIp(IP);
+            IP_Data = GeolocalizeIp(IP);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

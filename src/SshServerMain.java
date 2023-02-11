@@ -286,7 +286,7 @@ public class SshServerMain extends SshServerCliSupport {
         //######## MONGODB ###########
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentTime = dateFormat.format(new Date());
-        logger.SavefileDatabase(currentTime, IpAddressSplit[0],username, password,(success? "Success" : "Failed"));
+        logger.SaveFileDatabase(currentTime, IpAddressSplit[0],username, password,(success? "Success" : "Failed"));
         //############################
 
         return success;
