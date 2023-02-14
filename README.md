@@ -2,11 +2,13 @@
 
 # Contents
  
-- [Description](#description) 
-- [Installation Guide](#Installation-Guide)
-- [The ssh server command](#server-command)
-- [MongoDB Integration](#MongoDB-integration) 
-- [The Dashboard](#the-dashboard)
+- [SSH\_Honeypot](#ssh_honeypot)
+- [Contents](#contents)
+	- [Description](#description)
+	- [Installation Guide](#installation-guide)
+	- [Server Command](#server-command)
+	- [MongoDB Integration](#mongodb-integration)
+	- [The Dashboard](#the-dashboard)
 
 
 
@@ -19,7 +21,7 @@ Quick guide on how to use this honeypot.  You will find a detailed procedure to 
 
 1. Download the source code zip and save it into your desired folder or use the command 
 ```bash 
-$ git clone https://github.com/marcocampione/SSH_honeypot.git 
+git clone https://github.com/marcocampione/SSH_honeypot.git 
 ```
 
 2. Check if you have installed the lates version of java in your system.
@@ -37,11 +39,11 @@ javac 17.0.1
 
 3. To use the honeypot you need to compile and build it first, use the commands
 ```bash 
-$ javac -d classes -classpath "lib/*" src/*.java src/util/*.java src/filesystem/*.java
+javac -d classes -classpath "lib/*" src/*.java src/util/*.java src/filesystem/*.java
 ```
 
 ```bash
-$ jar -cf sshd.jar -C classes filesystem -C classes util -C classes DummyCommand.class -C classes SshServerMain.class
+jar -cf sshd.jar -C classes filesystem -C classes util -C classes DummyCommand.class -C classes SshServerMain.class
 ```
 
 - After these steps, you should have created two new files in the folder :
@@ -60,7 +62,7 @@ MONGODB_CONNECTION_STRING=mongodb://myDBReader:D1fficultP%40ssw0rd@mongodb0.exam
 	-  Log on to the server as an administrator.
 	-  Open the SSH configuration file sshd_config with the text editor :
 ```bash 
-$ sudo nano /etc/ssh/sshd_config
+sudo nano /etc/ssh/sshd_config
 ```
 
 ![Screenshot 2023-01-31 183123](https://user-images.githubusercontent.com/38539173/215848779-206d4feb-3c7a-4de2-b364-f45f3dcd1b96.png)
@@ -74,7 +76,7 @@ $ service ssh restart
 
 6. The setup is completed now you can run the honeypot using the command
 ```bash 
-$ java -cp "lib/*:sshd.jar" SshServerMain
+java -cp "lib/*:sshd.jar" SshServerMain
 ```
 
 ## Server Command
